@@ -1,4 +1,5 @@
 import { promptAction } from '@kit.ArkUI';
+import login from '../http/httpServe';
 
 @Entry
 @Component
@@ -23,7 +24,7 @@ struct LoginPage {
         .height(40)
         .justifyContent(FlexAlign.Center)
         .alignItems(VerticalAlign.Center)
-        .margin({ bottom: 16})
+        .margin({ bottom: 16 })
 
         Row() {
           Image($r('app.media.icon'))
@@ -42,7 +43,7 @@ struct LoginPage {
             .inputStyle()
         }
         .rowStyle()
-        .margin({ top: 10, bottom: 10 })
+        .margin({ top: 18, bottom: 18 })
 
         Row() {
           Image($r('app.media.icon'))
@@ -55,7 +56,7 @@ struct LoginPage {
 
         Button('登录')
           .width('100%')
-          .margin({ top: 20 })
+          .margin({ top: 24 })
           .onClick(() => this.buttonClick())
       }
       .width('80%')
@@ -64,18 +65,21 @@ struct LoginPage {
     }
     .width('100%')
     .height('100%')
-    .backgroundColor('#ffdddada')
+    .backgroundColor('#fff3f1f1')
   }
 
   buttonClick() {
-    console.log('button click');
-    if (this.isEmpty(this.service) || this.isEmpty(this.name) || this.isEmpty(this.pass)) {
-      this.toastShow('内容为空!')
-      return
-    }
-    //...
+    // if (this.isEmpty(this.service) || this.isEmpty(this.name) || this.isEmpty(this.pass)) {
+    //   this.toastShow('内容为空!')
+    //   return
+    // }
+    this.loginA()
   }
 
+  loginA = () => {
+    // login(this.name, this.pass)
+    login('admin', 'password')
+  }
   isEmpty = (key: string) => {
     return key === undefined || key === '' || key === null
   }
