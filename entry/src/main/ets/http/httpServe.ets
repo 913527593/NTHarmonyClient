@@ -1,5 +1,6 @@
 import axios, { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from '@ohos/axios'
-import loginUrl, { baseUrl } from './httpUrl'
+import { LoginRequest, LoginResponse } from './httpItem';
+import { loginUrl } from './httpUrl'
 
 const instance = axios.create({
   headers: {
@@ -15,25 +16,29 @@ instance.interceptors.request.use((config: InternalAxiosRequestConfig) => {
 }, (error: AxiosError) => {
   // 对请求错误做些什么
   return Promise.reject(error);
-});
+})
 
-interface request {
-  username: string,
-  password: string,
-}
-
-//
-const login = async (name: string, pass: string) => {
-  let req: request = { username: name, password: pass }
-  // const response: AxiosResponse = await instance.post(baseUrl+loginUrl, req)
-  await instance.post(baseUrl+loginUrl, req)
-    .then((response: AxiosResponse<string>) => {
-      console.debug('net test', 'response = ' + JSON.stringify(response));
+/**
+ *
+ * @param name
+ * @param pass
+ */
+async function login(name: string, pass: string): Promise<LoginResponse> {
+  let req: LoginRequest = { username: name, password: pass }
+  return new Promise((resolve, reject) => {
+    instance.post(loginUrl, req)
+      .then((response: AxiosResponse) => {
+        console.debug('net test', 'response = ' + response.status);
+        if (response.status === 200) {
+          resolve(response.data.data)
+        } else {
+          reject(new Error(response.status + ',' + response.statusText))
+        }
+      }).catch((error: Error) => {
+      console.error(error.message)
+      reject(error)
     })
-    .catch((error: Error) => {
-      console.info(JSON.stringify(error));
-      console.debug('net test', 'error =' + error.message);
-    })
+  })
 }
 
 export default login

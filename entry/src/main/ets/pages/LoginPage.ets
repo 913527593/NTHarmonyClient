@@ -5,8 +5,8 @@ import login from '../http/httpServe';
 @Component
 struct LoginPage {
   @State service: string = '';
-  @State name: string = '';
-  @State pass: string = '';
+  @State name: string = 'admin';
+  @State pass: string = 'password';
 
   build() {
     Column() {
@@ -32,6 +32,9 @@ struct LoginPage {
           TextInput({ placeholder: '请输入服务区地址', text: this.service })
             .type(InputType.Normal)
             .inputStyle()
+            .onChange((value: string) => {
+              this.service = value
+            })
         }
         .rowStyle()
 
@@ -41,6 +44,9 @@ struct LoginPage {
           TextInput({ placeholder: '请输入用户名', text: this.name })
             .type(InputType.Normal)
             .inputStyle()
+            .onChange((value: string) => {
+              this.name = value
+            })
         }
         .rowStyle()
         .margin({ top: 18, bottom: 18 })
@@ -51,6 +57,9 @@ struct LoginPage {
           TextInput({ placeholder: '请输入密码', text: this.pass })
             .type(InputType.Password)
             .inputStyle()
+            .onChange((value: string) => {
+              this.pass = value
+            })
         }
         .rowStyle()
 
@@ -70,18 +79,19 @@ struct LoginPage {
 
   buttonClick() {
     // if (this.isEmpty(this.service) || this.isEmpty(this.name) || this.isEmpty(this.pass)) {
-    //   this.toastShow('内容为空!')
-    //   return
-    // }
-    this.loginA()
+    if (this.isEmpty(this.name) || this.isEmpty(this.pass)) {
+      this.toastShow('内容为空!')
+      return
+    }
+    this.login()
   }
 
-  loginA = () => {
-    // login(this.name, this.pass)
-    login('admin', 'password')
+  login = async () => {
+    const data = await login('admin', 'password')
+    console.debug('net test', 'login response = ' + JSON.stringify(data));
   }
   isEmpty = (key: string) => {
-    return key === undefined || key === '' || key === null
+    return !Boolean(key)
   }
   toastShow = (key: string) => {
     promptAction.showToast({ message: key })
