@@ -6,4 +6,15 @@ const baseUrl = 'http:/172.20.10.6:3000'
  */
 const loginUrl = baseUrl + '/api/v1/user/login'
 
-export { loginUrl, }
+/**
+ *搜索
+ */
+const searchUrl = baseUrl + '/api/v1/search/keyword'
+
+/**
+ *推荐
+ */
+const recommendUrl = baseUrl + '/api/v1/recommend/list'
+
+
+export { loginUrl, searchUrl, recommendUrl }

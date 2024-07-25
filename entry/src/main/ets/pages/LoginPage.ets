@@ -1,5 +1,7 @@
 import { promptAction } from '@kit.ArkUI';
-import login from '../http/httpServe';
+import { login } from '../http/httpServe';
+import router from '@ohos.router'
+import { LoginResponse } from '../http/httpItem';
 
 @Entry
 @Component
@@ -87,9 +89,22 @@ struct LoginPage {
   }
 
   login = async () => {
-    const data = await login('admin', 'password')
-    console.debug('net test', 'login response = ' + JSON.stringify(data));
+    try {
+      const data = await login(this.name, this.pass)
+      console.debug('net test', 'login response = ' + JSON.stringify(data));
+      this.gotoSearch(data)
+    } catch (error) {
+      this.toastShow('登录失败!')
+    }
   }
+
+  gotoSearch(data: LoginResponse) {
+    router.pushUrl({
+      url: 'pages/SearchPage',
+      params: data
+    })
+  }
+
   isEmpty = (key: string) => {
     return !Boolean(key)
   }

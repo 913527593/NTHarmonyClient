@@ -14,3 +14,18 @@ export interface UserInfo {
   username: string,
   userpris: string[]
 }
+
+export interface SearchRequest {
+  search_word: string,
+  unident: string,
+  tmdbid: string,
+  filters: string,
+  media_type: string,
+  token: string,
+}
+
+export interface recommendRequest {
+  type: string,
+  subtype: string,
+  page: string,
+}
