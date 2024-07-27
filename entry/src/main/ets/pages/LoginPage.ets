@@ -2,6 +2,7 @@ import { promptAction } from '@kit.ArkUI';
 import { login } from '../http/httpServe';
 import router from '@ohos.router'
 import { LoginResponse } from '../http/httpItem';
+import { setTokenSync } from '../util/Preferences';
 
 @Entry
 @Component
@@ -92,6 +93,7 @@ struct LoginPage {
     try {
       const data = await login(this.name, this.pass)
       console.debug('net test', 'login response = ' + JSON.stringify(data));
+      setTokenSync(data.token)
       this.gotoSearch(data)
     } catch (error) {
       this.toastShow('登录失败!')
