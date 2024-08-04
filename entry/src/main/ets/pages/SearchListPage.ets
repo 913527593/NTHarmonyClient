@@ -1,4 +1,5 @@
 import PageTitle from '../component/PageTitle';
+import router from '@ohos.router'
 
 @Entry
 @Component
@@ -14,9 +15,14 @@ struct SearchListPage {
     }
   }
 
+  goBack() {
+    console.log('SearchListPage back')
+    router.back()
+  }
+
   build() {
     Column() {
-      PageTitle({ title: this.message })
+      PageTitle({ title: this.message, back: this.goBack })
       Grid(this.gridScroller) {
         ForEach(this.numbers, (item: number) => {
           GridItem() {

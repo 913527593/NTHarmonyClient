@@ -1,4 +1,4 @@
-import { recommend, search } from '../http/httpServe';
+import { recommend, search, searchResult } from '../http/httpServe';
 import router from '@ohos.router'
 import { LoginResponse } from '../http/httpItem';
 import { promptAction } from '@kit.ArkUI';
@@ -23,6 +23,11 @@ struct SearchPage {
           this.submitValue = value
           this.search()
         })
+
+      Text('search Result')
+        .onClick(()=>{
+          this.searchResult()
+        })
     }
     .width('100%')
     .padding({ left: 12, right: 12, top: 20 })
@@ -36,9 +41,18 @@ struct SearchPage {
     try {
       const response = await search(this.submitValue)
       console.debug('TAG', 'search response = ' + JSON.stringify(response));
+      if (response.code == 0 && response.success) {
+        //
+        this.searchResult()
+      }
     } catch (error) {
       this.toastShow('搜索失败!')
     }
+  }
+
+  async searchResult() {
+    const response = await searchResult()
+    console.debug('TAG', 'searchResult response = ' + JSON.stringify(response));
   }
 
   async recommend() {

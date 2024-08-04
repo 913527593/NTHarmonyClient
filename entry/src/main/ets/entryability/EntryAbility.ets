@@ -18,8 +18,7 @@ export default class EntryAbility extends UIAbility {
 
     //初始化首选项
     initPreferences(this.context)
-    // windowStage.loadContent('pages/LoginPage', (err, data) => {
-    windowStage.loadContent('pages/SearchListPage', (err, data) => {
+    windowStage.loadContent('pages/LoginPage', (err, data) => {
       if (err.code) {
         hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');
         return;

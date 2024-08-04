@@ -12,9 +12,14 @@ const loginUrl = baseUrl + '/api/v1/user/login'
 const searchUrl = baseUrl + '/api/v1/search/keyword'
 
 /**
+ *
+ */
+const searchResultUrl = baseUrl + '/api/v1/search/result'
+
+/**
  *推荐
  */
 const recommendUrl = baseUrl + '/api/v1/recommend/list'
 
 
-export { loginUrl, searchUrl, recommendUrl }
+export { loginUrl, searchUrl, searchResultUrl, recommendUrl }

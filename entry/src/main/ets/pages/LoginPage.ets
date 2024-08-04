@@ -91,10 +91,13 @@ struct LoginPage {
 
   login = async () => {
     try {
-      const data = await login(this.name, this.pass)
-      console.debug('net test', 'login response = ' + JSON.stringify(data));
-      setTokenSync(data.token)
-      this.gotoSearch(data)
+      const response = await login(this.name, this.pass)
+      console.debug('net test', 'login response = ' + JSON.stringify(response));
+      if (response.code === 0 && response.success) {
+        const data = response.data
+        setTokenSync(data.token)
+        this.gotoSearch(data)
+      }
     } catch (error) {
       this.toastShow('登录失败!')
     }
