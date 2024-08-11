@@ -1,7 +1,8 @@
 import { recommend, search, searchResult } from '../http/httpServe';
 import router from '@ohos.router'
-import { LoginResponse } from '../http/httpItem';
+import { LoginResponse, Recommend } from '../http/httpItem';
 import { promptAction } from '@kit.ArkUI';
+import RecommendItem from '../component/RecommendItem';
 
 @Entry
 @Component
@@ -9,9 +10,9 @@ struct SearchPage {
   @State submitValue: string = '鬼灭之刃';
   controller: SearchController = new SearchController()
   @State login: LoginResponse = router.getParams() as LoginResponse;
+  @State recommendList: Recommend[] = [];
 
   aboutToAppear(): void {
-    console.log('params =' + JSON.stringify(this.login));
     this.recommend()
   }
 
@@ -23,11 +24,20 @@ struct SearchPage {
           this.submitValue = value
           this.search()
         })
+      Row() {
+        Text('推荐列表')
+        Text('推荐类型')
+      }
+      .width('100%')
+      .justifyContent(FlexAlign.SpaceBetween)
 
-      Text('search Result')
-        .onClick(()=>{
-          this.searchResult()
-        })
+      List({ space: 10 }) {
+        ForEach(this.recommendList, (item: Recommend,) => {
+          ListItem() {
+            RecommendItem({ item: item })
+          }
+        }, (item: Recommend) => JSON.stringify(item))
+      }.margin({ top: 8 })
     }
     .width('100%')
     .padding({ left: 12, right: 12, top: 20 })
@@ -40,9 +50,7 @@ struct SearchPage {
   async search() {
     try {
       const response = await search(this.submitValue)
-      console.debug('TAG', 'search response = ' + JSON.stringify(response));
       if (response.code == 0 && response.success) {
-        //
         this.searchResult()
       }
     } catch (error) {
@@ -51,11 +59,15 @@ struct SearchPage {
   }
 
   async searchResult() {
-    const response = await searchResult()
-    console.debug('TAG', 'searchResult response = ' + JSON.stringify(response));
+    await searchResult()
+    // const response = await searchResult()
+    // console.debug('TAG', 'searchResult response = ' + JSON.stringify(response));
   }
 
   async recommend() {
-    await recommend('探索', '榜单推荐')
+    const response = await recommend('MOV', 'hm')
+    if (response.code === 0 && response.success) {
+      this.recommendList = response.data.Items
+    }
   }
 }

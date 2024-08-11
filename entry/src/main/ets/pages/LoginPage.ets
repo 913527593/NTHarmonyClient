@@ -92,7 +92,6 @@ struct LoginPage {
   login = async () => {
     try {
       const response = await login(this.name, this.pass)
-      console.debug('net test', 'login response = ' + JSON.stringify(response));
       if (response.code === 0 && response.success) {
         const data = response.data
         setTokenSync(data.token)
